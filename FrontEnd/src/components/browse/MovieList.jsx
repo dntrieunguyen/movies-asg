@@ -28,14 +28,32 @@ function MovieList({ title, fetchUrl, isLargeRow }) {
          setTrailerUrl('');
       } else {
          setSelectedMovie(movie);
-         movieTrailer(movie?.title || '')
-            .then(url => {
-               const urlParams = new URLSearchParams(new URL(url)?.search);
-               setTrailerUrl(urlParams.get('v'));
-            })
-            .catch(error => console.log(error));
+         const url = 'http://localhost:8800/api/movie/video';
+
+         async function fetchTrailer() {
+            try {
+               const request = await axios.post(
+                  url,
+                  {
+                     id: movie.id,
+                  },
+                  {
+                     headers: {
+                        Authorization: 'Bearer 8qlOkxz4wq',
+                     },
+                  },
+               );
+               setTrailerUrl(request?.data?.result?.key);
+               return request;
+            } catch (error) {
+               console.log(error.response.data);
+            }
+         }
+         fetchTrailer();
       }
    };
+
+   useEffect(() => {}, [selectedMovie]);
 
    movies.sort((a, b) => b.popularity - a.popularity);
    movies.splice(movies_limit);

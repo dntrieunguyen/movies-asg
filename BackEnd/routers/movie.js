@@ -14,6 +14,6 @@ router.get('/trending', getTrending);
 router.get('/top_rate', getTopRate);
 router.get('/discover/', getDiscover);
 router.post('/video/search', verifyToken, search);
-router.post('/video/:id', verifyToken, getVideo);
+router.post('/video', verifyToken, getVideo);
 
 export default router;

@@ -34,12 +34,17 @@ const Search = () => {
       if (keyword?.length === 0) alert('enter keywords');
 
       const baseURL = 'http://localhost:8800/api/movie/video/search';
-      const searchURL = `${baseURL}?keyword=${keyword}&genre=${genre}&media_type=${mediaType}&language=${language}&year=${year}`;
 
       try {
          const responses = await axios.post(
-            searchURL,
-            {},
+            baseURL,
+            {
+               keyword,
+               genre,
+               media_type: mediaType,
+               language,
+               year,
+            },
             {
                headers: {
                   Authorization: 'Bearer 8qlOkxz4wq',

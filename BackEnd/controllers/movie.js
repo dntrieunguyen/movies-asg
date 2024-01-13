@@ -137,7 +137,7 @@ export const getDiscover = async (req, res, next) => {
 export const getVideo = async (req, res, next) => {
    try {
       // Lấy film_id từ params
-      const film_id = +req.params.id;
+      const film_id = +req.body.id;
 
       // Kiểm tra xem film_id có tồn tại không
       if (!film_id)
@@ -151,12 +151,12 @@ export const getVideo = async (req, res, next) => {
 
       // Lọc danh sách video dựa trên film_id
       const filterVideos = videoList
-         .filter(video => video.id === film_id)
-         .map(video => video.videos)
-         .shift()
-         .filter(video => video.official === true && video.site === 'YouTube')
-         .filter(video => ['Trailer', 'Teaser'].includes(video.type))
-         .sort((a, b) => {
+         ?.filter(video => video.id === film_id)
+         ?.map(video => video.videos)
+         ?.shift()
+         ?.filter(video => video.official === true && video.site === 'YouTube')
+         ?.filter(video => ['Trailer', 'Teaser'].includes(video.type))
+         ?.sort((a, b) => {
             const typeComparison = b.type.localeCompare(a.type);
             if (typeComparison !== 0) {
                return typeComparison;
@@ -165,7 +165,7 @@ export const getVideo = async (req, res, next) => {
             const dateB = Date.parse(b.published_at);
             return dateB - dateA;
          })
-         .shift();
+         ?.shift();
 
       // Kiểm tra nếu không tìm thấy video, trả về thông báo lỗi
       if (!filterVideos)
@@ -192,7 +192,8 @@ export const search = async (req, res, next) => {
       const movieList = Movies.all();
 
       // Lấy các tham số từ query, bao gồm keyword, page, genre, media_type, language và year
-      const { keyword, page, genre, media_type, language, year } = req.query;
+      const { keyword, page, genre, media_type, language, year } = req.body;
+      console.log(req.body);
 
       // Kiểm tra xem keyword có tồn tại không
       if (!keyword)
